@@ -1,4 +1,7 @@
 // -- Extra human level procc etensions. --
+/mob/living/carbon/human
+	var/temp_disease_counter = 0
+
 /mob/living/carbon/human/Topic(href, href_list)
 	. = ..()
 	if(href_list["flavor_text"])
