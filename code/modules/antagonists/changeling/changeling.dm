@@ -4,7 +4,7 @@
 
 /datum/antagonist/changeling
 	name = "Changeling"
-	roundend_category  = "changelings"
+	roundend_category = "changelings"
 	antagpanel_category = "Changeling"
 	job_rank = ROLE_CHANGELING
 	antag_moodlet = /datum/mood_event/focused
@@ -85,13 +85,11 @@
 	emporium_action.Grant(owner.current)
 
 /datum/antagonist/changeling/on_gain()
-	create_actions()
-	reset_powers()
-	create_initial_profile()
+	/// NON-MODULE CHANGE: ADVANCED CHANGELINGS
 	if(give_objectives)
+		finalize_antag()
 		forge_objectives()
-	owner.current.grant_all_languages(FALSE, FALSE, TRUE) //Grants omnitongue. We are able to transform our body after all.
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ling_aler.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
+
 	. = ..()
 
 /datum/antagonist/changeling/on_removal()
@@ -418,16 +416,10 @@
 			objectives += ac
 
 	if(prob(60))
-		if(prob(85))
-			var/datum/objective/steal/steal_objective = new
-			steal_objective.owner = owner
-			steal_objective.find_target()
-			objectives += steal_objective
-		else
-			var/datum/objective/download/download_objective = new
-			download_objective.owner = owner
-			download_objective.gen_amount_goal()
-			objectives += download_objective
+		var/datum/objective/steal/steal_objective = new
+		steal_objective.owner = owner
+		steal_objective.find_target()
+		objectives += steal_objective
 
 	var/list/active_ais = active_ais()
 	if(active_ais.len && prob(100/GLOB.joined_player_list.len))
@@ -683,6 +675,20 @@
 
 	return parts.Join("<br>")
 
+/datum/antagonist/changeling/get_preview_icon()
+	var/icon/final_icon = render_preview_outfit(/datum/outfit/changeling)
+	var/icon/split_icon = render_preview_outfit(/datum/outfit/job/engineer)
+
+	final_icon.Shift(WEST, world.icon_size / 2)
+	final_icon.Shift(EAST, world.icon_size / 2)
+
+	split_icon.Shift(EAST, world.icon_size / 2)
+	split_icon.Shift(WEST, world.icon_size / 2)
+
+	final_icon.Blend(split_icon, ICON_OVERLAY)
+
+	return finish_preview_icon(final_icon)
+
 /datum/antagonist/changeling/ui_data(mob/user)
 	var/list/data = list()
 	var/list/memories = list()
@@ -701,7 +707,7 @@
 	var/list/memories = list()
 
 	for(var/memory_key as anything in user?.mind.memories)
-		var/datum/memory/memory =  user.mind.memories[memory_key]
+		var/datum/memory/memory = user.mind.memories[memory_key]
 		memories += list(list("name" = memory.name, "quality" = memory.story_value))
 
 	data["memories"] = memories
@@ -726,3 +732,10 @@
 		to_chat(owner, span_boldannounce("You are a fresh changeling birthed from a headslug! You aren't as strong as a normal changeling, as you are newly born."))
 	if(policy)
 		to_chat(owner, policy)
+
+/datum/outfit/changeling
+	name = "Changeling"
+
+	head = /obj/item/clothing/head/helmet/changeling
+	suit = /obj/item/clothing/suit/armor/changeling
+	l_hand = /obj/item/melee/arm_blade

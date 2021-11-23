@@ -1,5 +1,6 @@
-
 /// -- The big file that makes digitigrate pants work. --
+// Some digitigrade pants sprites ported from skyrat-tg / citadel.
+// Others adapted for use in this codebase. Code original.
 /obj/item/clothing
 	/// Whether we use the modular clothing dmi instead of the normal one.
 	var/use_modular_dmi = FALSE
@@ -99,7 +100,7 @@
 // - Science
 //   - Scientist
 //   - Xenobiologist
-//   - Toxicologist
+//   - Ordnance Tech
 //   - Roboticist
 //   - Geneticist
 //   - Research Director (Turtleneck, Vest, and Suit)
@@ -361,7 +362,7 @@
 /obj/item/clothing/under/rank/rnd/geneticist/skirt
 	use_modular_dmi = FALSE
 
-/obj/item/clothing/under/rank/rnd/toxicologist/skirt
+/obj/item/clothing/under/rank/rnd/ordnance_tech/skirt
 	use_modular_dmi = FALSE
 
 /obj/item/clothing/under/rank/rnd/xenobiologist/skirt
