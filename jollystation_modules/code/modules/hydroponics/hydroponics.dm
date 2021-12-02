@@ -55,3 +55,9 @@
 		to_chat(user, span_warning("This tray does not accept [seed]!"))
 		return FALSE
 	return TRUE
+
+/obj/machinery/hydroponics/attackby(obj/item/O, mob/user, params)
+	if(istype(O, /obj/item/seeds))
+		if(!alien_check(user, O))
+			return FALSE
+	return ..()
